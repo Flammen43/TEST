@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Портал регистрации гостей</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <section id="auth" class="auth-screen active">
+        <div class="auth-card">
+          <div class="auth-intro">
+            <h1>Портал регистрации гостей</h1>
+            <p>
+              Отслеживайте посетителей, фиксируйте контактные данные и управляйте
+              статусами в режиме реального времени. Войдите, чтобы начать работу.
+            </p>
+          </div>
+          <form id="login-form" class="auth-form" autocomplete="off">
+            <label for="password">Пароль администратора</label>
+            <div class="password-field">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                placeholder="pumpa pumpa"
+              />
+              <button type="button" id="toggle-password" aria-label="Показать пароль">
+                <span class="icon-eye"></span>
+              </button>
+            </div>
+            <button type="submit" class="primary">Войти</button>
+            <p class="hint">Пароль по умолчанию: <strong>pumpa pumpa</strong></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="app" class="main" aria-hidden="true">
+        <header class="app-header">
+          <div>
+            <h1>Гости мероприятия</h1>
+            <p>Ведите учет посетителей и управляйте списком в несколько кликов.</p>
+          </div>
+          <div class="header-actions">
+            <button type="button" id="import-button" class="ghost">
+              Загрузить Excel
+            </button>
+            <input
+              type="file"
+              id="import-input"
+              accept=".xlsx,.xls,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              hidden
+            />
+            <button type="button" id="export-button" class="ghost">
+              Выгрузить Excel
+            </button>
+            <button type="button" id="add-guest" class="primary">
+              Добавить гостя
+            </button>
+            <button type="button" id="logout" class="secondary">Выйти</button>
+          </div>
+        </header>
+
+        <div class="table-card">
+          <div class="table-wrapper">
+            <table aria-describedby="empty-state">
+              <thead>
+                <tr>
+                  <th>ФИО</th>
+                  <th>Email</th>
+                  <th>Телефон</th>
+                  <th>Заметка</th>
+                  <th>Статус</th>
+                  <th class="actions-column">Действия</th>
+                </tr>
+              </thead>
+              <tbody id="guest-table"></tbody>
+            </table>
+            <div id="empty-state" class="empty-state" role="status">
+              <h2>Пока нет гостей</h2>
+              <p>Добавьте первого гостя или загрузите список из Excel.</p>
+              <button type="button" id="empty-add" class="primary">Добавить гостя</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="guest-modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <button class="modal-close" type="button" aria-label="Закрыть">&times;</button>
+        <h2 id="modal-title">Добавление гостя</h2>
+        <form id="guest-form" class="guest-form" autocomplete="off">
+          <input type="hidden" id="guest-id" />
+          <div class="form-grid">
+            <label class="field">
+              <span>ФИО</span>
+              <input type="text" id="fullName" name="fullName" required placeholder="Иванов Иван Иванович" />
+            </label>
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="email" name="email" required placeholder="name@example.com" />
+            </label>
+            <label class="field">
+              <span>Телефон</span>
+              <input type="tel" id="phone" name="phone" required placeholder="+7 (999) 123-45-67" />
+            </label>
+            <label class="field">
+              <span>Заметка</span>
+              <textarea id="note" name="note" rows="3" placeholder="Например: VIP, сопровождение"></textarea>
+            </label>
+            <label class="field">
+              <span>Статус</span>
+              <select id="status" name="status" required>
+                <option value="Пришел">Пришел</option>
+                <option value="Не пришёл">Не пришёл</option>
+              </select>
+            </label>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="secondary" id="cancel-modal">Отмена</button>
+            <button type="submit" class="primary">Сохранить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
